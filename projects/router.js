@@ -23,20 +23,19 @@ router.get("/:id", (req, res) => {
 		.then(project => {
 			if (project) {
 				TasksModel.getForProject(req.params.id)
-					.then(result => {
-						// ResourcesModel.getForProject()
-						// 	.then(result => {
-						// 		res.json(result);
-						// 	})
-						// 	.catch(err => {
-						// 		res.json(err);
-						// 	});
-
-						project[0].tasks = result;
-						res.json(project);
+					.then(tasks => {
+						ResourcesModel.getForProject(req.params.id)
+							.then(resources => {
+								project[0].tasks = tasks;
+								project[0].resources = resources;
+								res.json(project);
+							})
+							.catch(err => {
+								res.json(err);
+							});
 					})
 					.catch(err => {
-						res.status(500).json({ message: "error" });
+						res.status(500).json({ message: err.message });
 					});
 			} else {
 				res.json({});

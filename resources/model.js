@@ -8,21 +8,23 @@ const getById = id => {
 	return DB(TABLE).where({ id });
 };
 const getForProject = id => {
-	return DB("projects")
-		.where("projects.id", "=", id)
-		.join(
-			"projects_resources",
-			"projects_resources.project_id",
-			"=",
-			"projects.id"
-		)
-		.join(
-			"resources",
-			"resources.id",
-			"=",
-			"projects_resources.resource_id"
-		)
-		.toSQL();
+	return (
+		DB("projects")
+			// .select({ abc: "projects.id" })
+			.where("projects.id", "=", id)
+			.join(
+				"projects_resources",
+				"projects_resources.project_id",
+				"=",
+				"projects.id"
+			)
+			.join(
+				"resources",
+				"resources.id",
+				"=",
+				"projects_resources.resource_id"
+			)
+	);
 };
 
 const insert = fields => {
