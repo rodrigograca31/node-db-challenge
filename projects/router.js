@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const Model = require("./model");
+const TasksModel = require("../tasks/model");
+const ResourcesModel = require("../resources/model");
 
 router.get("/", (req, res) => {
 	Model.getAll()
@@ -18,9 +20,24 @@ router.get("/", (req, res) => {
 });
 router.get("/:id", (req, res) => {
 	Model.getById(req.params.id)
-		.then(result => {
-			if (result) {
-				res.json(result);
+		.then(project => {
+			if (project) {
+				TasksModel.getForProject(req.params.id)
+					.then(result => {
+						// ResourcesModel.getForProject()
+						// 	.then(result => {
+						// 		res.json(result);
+						// 	})
+						// 	.catch(err => {
+						// 		res.json(err);
+						// 	});
+
+						project[0].tasks = result;
+						res.json(project);
+					})
+					.catch(err => {
+						res.status(500).json({ message: "error" });
+					});
 			} else {
 				res.json({});
 			}

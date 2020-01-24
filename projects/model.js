@@ -4,6 +4,14 @@ const TABLE = "projects";
 const getAll = () => {
 	return DB(TABLE);
 };
+// const getById = id => {
+// 	return (
+// 		DB(TABLE)
+// 			.where("projects.id", "=", id)
+// 			// .select(DB.raw("array_to_json(tasks.description) as tasks"))
+// 			.join("tasks", "tasks.project_id", "=", "projects.id")
+// 	);
+// };
 const getById = id => {
 	return DB(TABLE).where({ id });
 };

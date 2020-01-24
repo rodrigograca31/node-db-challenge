@@ -1,11 +1,28 @@
 const DB = require("../data/db-config");
-const TABLE = "ingredients";
+const TABLE = "resources";
 
 const getAll = () => {
 	return DB(TABLE);
 };
 const getById = id => {
 	return DB(TABLE).where({ id });
+};
+const getForProject = id => {
+	return DB("projects")
+		.where("projects.id", "=", id)
+		.join(
+			"projects_resources",
+			"projects_resources.project_id",
+			"=",
+			"projects.id"
+		)
+		.join(
+			"resources",
+			"resources.id",
+			"=",
+			"projects_resources.resource_id"
+		)
+		.toSQL();
 };
 
 const insert = fields => {
@@ -29,5 +46,6 @@ module.exports = {
 	insert,
 	update,
 	deleteEntry,
-	getById
+	getById,
+	getForProject
 };

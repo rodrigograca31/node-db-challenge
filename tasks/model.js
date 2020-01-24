@@ -19,6 +19,9 @@ const getAllWithProjectInfo = () => {
 const getById = id => {
 	return DB(TABLE).where({ id });
 };
+const getForProject = id => {
+	return DB(TABLE).where({ project_id: id });
+};
 
 const insert = fields => {
 	return DB(TABLE).insert(fields);
@@ -42,5 +45,6 @@ module.exports = {
 	update,
 	deleteEntry,
 	getById,
-	getAllWithProjectInfo
+	getAllWithProjectInfo,
+	getForProject
 };
